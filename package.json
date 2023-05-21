@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Kirill-GBN/news-app/issues"
   },
-  "homepage": "https://github.com/Kirill-GBN/news-app#readme"
+  "homepage": "https://github.com/Kirill-GBN/news-app#readme",
+  "dependencies": {
+    "lovefield": "^2.1.12"
+  }
 }
