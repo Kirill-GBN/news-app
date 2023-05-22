@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статьи</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/article.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/news-app/node_modules/lovefield/dist/lovefield.min.js"></script>
+    <script type="module" src="../js/index.js"></script>
+    <script src="../js/article.js"></script>
+</head>
+<body>
+        <nav class="nav">
+        <ul class="nav-list">
+            <li><button class="nav-btn"> <a class="nav-link" href="../html/index.html">Главная страница</a></button></li>
+            <li><button class="nav-btn"><a class="nav-link" href="../html/article.html">Статьи</a></button></li>
+            <li><button class="nav-btn"><a class="nav-link" href="../html/user.html">Пользователи</a></button></li>
+            <li><button class="nav-btn"><a class="nav-link" href="../html/comment.html">Комментарии</a></button></li>
+            <li><button class="nav-btn"><a class="nav-link" href="../html/like.html">Лайки</a></button></li>
+        </ul>
+    </nav>
+
+    <div class="table-form">
+        
+        <div class="table-box">
+
+            <table>
+                <caption>Новостные статьи</caption>
+                <tr>
+                    <th>#</th>
+                    <th>Заголовок</th>
+                    <th>Дата публикации</th>
+                    <th>Область/предмет</th>
+                    <th>Рейтинг</th>
+                    <th>Действия</th>
+                </tr>
+            </table>
+        
+        </div>
+        
+        <div class="form-box">
+    
+            <form id="form-content">
+                <label for="title">Заголовок статьи:</label>
+                <input type="text" id="title" name="title" placeholder="Введите название"><br>
+                <label for="date">Дата публикации статьи:</label>
+                <input type="date" id="date" name="date"><br>
+                <label for="subject">Предметная область статьи:</label>
+                <input type="text" id="subject" name="subject" placeholder="Укажите область"><br>
+                <label for="rating">Рейтинг статьи:</label>
+                <input type="text" id="rating" name="rating" placeholder="Укажите рейтинг"><br>
+                <div class="wrapper-btn">
+                    <input class="sub-btn-link" type="submit" value="Добавить">
+                </div>
+                
+            </form>
+    
+        </div>
+    
+    </div>
+
+
+</body>
+</html>
