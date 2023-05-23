@@ -63,10 +63,6 @@ body {
     cursor: pointer; 
 }
 
-/* .nav-btn a {
-    display: block;
-} */
-
 .nav-link:hover {
     color: rgb(5, 5, 5);
     transition: 0.3s;

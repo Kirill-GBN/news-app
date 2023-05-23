@@ -23,6 +23,45 @@
             <li><button class="nav-btn"><a class="nav-link" href="../html/like.html">Лайки</a></button></li>
         </ul>
     </nav>
+
+    <div class="table-form">
+        
+        <div class="table-box">
+
+            <table>
+                <caption>Комментарии</caption>
+                <tr>
+                    <th>#</th>
+                    <th>Текст</th>
+                    <th>Дата публикации</th>
+                    <th>Автор</th>
+                    <th>Номер статьи</th>
+                </tr>
+            </table>
+        
+        </div>
+        
+        <div class="form-box">
+    
+            <form id="form-content">
+                <h2>Панель упраления</h2> 
+                <label for="comment">Текст:</label>
+                <textarea required placeholder="Введите комментарий" name="comment" id="comment"></textarea><br>
+                <label for="date">Дата публикации статьи:</label>
+                <input type="date" id="date" name="date"><br>
+                <label for="author">Автор:</label>
+                <input type="text" id="author" name="author" placeholder="Введите имя (никнейм)"><br>
+                <label for="art-number">Номер статьи:</label>
+                <input type="number" id="art-number" name="art-number" placeholder="Укажите номер статьи"><br>
+                <div class="wrapper-btn">
+                    <input class="sub-btn-link" type="submit" value="Добавить">
+                </div>
+                
+            </form>
+    
+        </div>
+    
+    </div>
     
 </body>
 </html>

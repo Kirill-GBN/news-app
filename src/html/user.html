@@ -49,8 +49,9 @@
                 <input type="text" id="nickname" name="nickname" placeholder="Введите никнейм"><br>
                 <label for="email">Электронная почта:</label>
                 <input type="text" id="email" name="email" placeholder="Укажите эл. почту"><br>
-                <label for="status">Статус:</label>
-                <input type="text" id="status" name="status" placeholder="Укажите статус"><br>
+                <input type="checkbox" id="status" name="status">
+                Статус:
+                <label for="status" data-onlabel="В сети" data-offlabel="Не в сети" class="lb"></label>
                 <div class="wrapper-btn">
                     <input class="sub-btn-link" type="submit" value="Добавить">
                 </div>

@@ -9,6 +9,7 @@ caption {
 table {
     width: 100%;
     margin-left: 15px;
+    min-width: 810px;
 }
 
 table, th, td {
@@ -63,7 +64,7 @@ tr:nth-child(odd) {
     border: 2px solid black;
     border-radius: 15px;
     background-color: rgba(64, 238, 180, 0.637);
-    max-height: 500px;
+    max-height: 650px;
 }
 
 #form-content {
@@ -75,13 +76,55 @@ tr:nth-child(odd) {
     font-weight: 600;
 }
 
-input {
+textarea {
+    width: 200px;
+    height: 70px;
+    resize: none;
+}
+
+input, textarea {
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
     font-size: 16px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+#like {
+    position: absolute;
+    left: -100vw;
+  }
+
+#like:checked + label {
+    -webkit-filter: none;
+            filter: none;
+  }
+
+  #like:checked + label:before, #like:checked + label:after {
+    -webkit-animation: inherit;
+            animation: inherit;
+    -webkit-animation-timing-function: ease-out;
+            animation-timing-function: ease-out;
+  }
+
+  #like:focus + label {
+    text-shadow: 0 0 3px white,  0 1px 1px white, 0 -1px 1px white,  1px 0 1px white, -1px 0 1px white;
+  }
+  
+  [for='like'] {
+    align-self: center;
+    position: relative;
+    color: #888;
+    font-size: 2.2em;
+    -webkit-filter: grayscale(1);
+            filter: grayscale(1);
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    cursor: pointer;
+    margin-bottom: 25px;
+  }
 
 label {
     cursor: pointer;
@@ -95,7 +138,6 @@ label {
     cursor: pointer; 
     border-radius: 5px;
     margin-bottom: 20px;
-    margin-left: 20px;
     background-color: #e29ccb;
     box-sizing: border-box;
     border: none;
