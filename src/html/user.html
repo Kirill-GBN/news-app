@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пользователи</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/user.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/news-app/node_modules/lovefield/dist/lovefield.min.js"></script>
+    <script type="module" src="../js/index.js"></script>
+    <script src="../js/user.js"></script>
+</head>
+<body>
+    
+    <nav class="nav">
+        <ul class="nav-list">
+            <li><button class="nav-btn"> <a class="nav-link" href="../html/index.html">Главная страница</a></button></li>
+            <li><button class="nav-btn"><a class="nav-link" href="../html/article.html">Статьи</a></button></li>
+            <li><button class="nav-btn"><a class="nav-link" href="../html/user.html">Пользователи</a></button></li>
+            <li><button class="nav-btn"><a class="nav-link" href="../html/comment.html">Комментарии</a></button></li>
+            <li><button class="nav-btn"><a class="nav-link" href="../html/like.html">Лайки</a></button></li>
+        </ul>
+    </nav>
+
+    <div class="table-form">
+        
+        <div class="table-box">
+
+            <table>
+                <caption>Пользователи</caption>
+                <tr>
+                    <th>#</th>
+                    <th>Никнейм</th>
+                    <th>Элекронная почта</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+            </table>
+        
+        </div>
+        
+        <div class="form-box">
+    
+            <form id="form-content">
+                <h2>Панель упраления</h2> 
+                <label for="nickname">Никнейм:</label>
+                <input type="text" id="nickname" name="nickname" placeholder="Введите никнейм"><br>
+                <label for="email">Электронная почта:</label>
+                <input type="text" id="email" name="email" placeholder="Укажите эл. почту"><br>
+                <label for="status">Статус:</label>
+                <input type="text" id="status" name="status" placeholder="Укажите статус"><br>
+                <div class="wrapper-btn">
+                    <input class="sub-btn-link" type="submit" value="Добавить">
+                </div>
+                
+            </form>
+    
+        </div>
+    
+    </div>
+
+</body>
+</html>
