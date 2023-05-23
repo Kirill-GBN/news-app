@@ -27,14 +27,15 @@ body {
     flex-direction: row;
     align-items: center;
     gap: 42px;
-    margin-left: 55px;
+    margin-left: 40px;
     height: 21px;
     list-style-type: none;
 }
 
 .nav-link {
-    width: 160px;
-    height: 41px; 
+    display: block;
+    width: 150px;
+    height: 22px; 
     font-family: 'Red Hat Text';
     font-style: normal;
     font-weight: 600;
@@ -42,13 +43,12 @@ body {
     line-height: 21px;
     color: #FFFFFF;
     text-decoration: none;
-    padding: 0px;
-    margin: 0px;
+    padding: 5px;
 }
   
 .nav-btn {
-    width: 160px;
-    height: 41px;
+    width: 167px;
+    height: 40px;
     background: #0D606F;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 2px 3px rgba(13, 96, 111, 0.16);
     border-radius: 10px;
@@ -63,8 +63,11 @@ body {
     cursor: pointer; 
 }
 
+/* .nav-btn a {
+    display: block;
+} */
+
 .nav-link:hover {
-    position: relative;
     color: rgb(5, 5, 5);
     transition: 0.3s;
     transition: color 0.5s;
