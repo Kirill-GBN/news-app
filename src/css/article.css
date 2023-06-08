@@ -1,3 +1,19 @@
+body::after {
+    content: "";
+    width: 100%;
+    /* background: url(../img/Новости.jpg); */
+    background-color: #d030e6;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.18;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    z-index: -1;
+}
+
 caption {
     margin-top: 25px;
     margin-bottom: 25px;
@@ -9,7 +25,6 @@ caption {
 table {
     width: 100%;
     margin-left: 15px;
-    min-width: 810px;
 }
 
 table, th, td {
@@ -19,6 +34,8 @@ table, th, td {
 
 th, td {
     padding: 10px;
+    max-width: 150px;
+    word-wrap: break-word;
 }
 
 th {
@@ -51,6 +68,7 @@ tr:nth-child(odd) {
 .table-box {
     margin: 0;
     padding: 0;
+    max-width: 870px;
 }
 
 
@@ -64,7 +82,10 @@ tr:nth-child(odd) {
     border: 2px solid black;
     border-radius: 15px;
     background-color: rgba(64, 238, 180, 0.637);
-    max-height: 650px;
+    max-height: 700px;
+    position: fixed;
+    margin-left: 950px;
+    margin-right: 0px;
 }
 
 #form-content {
@@ -74,6 +95,7 @@ tr:nth-child(odd) {
     margin: 20px;
     font-size: 18px;
     font-weight: 600;
+    max-height: 700px;
 }
 
 textarea {
@@ -90,26 +112,17 @@ input, textarea {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#like {
-    position: absolute;
-    left: -100vw;
-  }
 
-#like:checked + label {
+.like {
+    display: none;
+}
+
+  
+.like:checked + label {
     -webkit-filter: none;
             filter: none;
-  }
+}
 
-  #like:checked + label:before, #like:checked + label:after {
-    -webkit-animation: inherit;
-            animation: inherit;
-    -webkit-animation-timing-function: ease-out;
-            animation-timing-function: ease-out;
-  }
-
-  #like:focus + label {
-    text-shadow: 0 0 3px white,  0 1px 1px white, 0 -1px 1px white,  1px 0 1px white, -1px 0 1px white;
-  }
   
   [for='like'] {
     align-self: center;
@@ -123,14 +136,19 @@ input, textarea {
         -ms-user-select: none;
             user-select: none;
     cursor: pointer;
-    margin-bottom: 25px;
-  }
+    margin-top: -7px;
+    margin-bottom: 20px;
+}
 
 label {
     cursor: pointer;
 }
 
-.sub-btn-link {
+.dis {
+    cursor: auto;
+}
+
+.sub-btn-link, .cancel-btn {
     font-size: 20px; 
     font-family: 'Franklin Gothic Medium', sans-serif; 
     color: rgb(128, 0, 0); 
@@ -146,7 +164,7 @@ label {
     cursor: pointer;
 }
     
-.sub-btn-link:hover {
+.sub-btn-link:hover, .cancel-btn:hover {
     color: #d63ceb;
     cursor: pointer;
     transition: .3s;
@@ -163,20 +181,39 @@ label {
 
 .submit-btn-red {
     background-color: rgba(255, 1, 1, 0.774);
+    margin-left: 20px;
 }
 
 .edit-btn {
     color: rgb(12, 88, 24);
     margin-bottom: 7px;
+    font-family: 'Franklin Gothic Medium', sans-serif; 
+    cursor: pointer;
 }
 
 .remove-btn {
     color: rgb(207, 11, 11);
+    font-family: 'Franklin Gothic Medium', sans-serif; 
+    cursor: pointer;
 }
 
 .edit-btn:hover {
     text-decoration: underline;
     opacity: 55%;
+}
+
+.checked {
+    color: yellow;
+}
+
+.unchecked {
+    color: transparent;
+    text-shadow: 0 0 0 #888;
+}
+
+.cursor {
+ cursor: default;
+ pointer-events: none;
 }
 
  .remove-btn:hover {

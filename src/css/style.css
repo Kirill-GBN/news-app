@@ -33,8 +33,13 @@ body {
 }
 
 .nav-link {
+    width: 149px;
+    margin-left:0;
+    margin-right:0;
+    padding-left:0;
+    padding-right:0;
     display: block;
-    width: 150px;
+    text-align: center;
     height: 22px; 
     font-family: 'Red Hat Text';
     font-style: normal;

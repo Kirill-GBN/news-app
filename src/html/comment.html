@@ -34,8 +34,9 @@
                     <th>#</th>
                     <th>Текст</th>
                     <th>Дата публикации</th>
-                    <th>Автор</th>
-                    <th>Номер статьи</th>
+                    <th>Автор по ID</th>
+                    <th>Номер статьи по ID</th>
+                    <th>Действия</th>
                 </tr>
             </table>
         
@@ -49,10 +50,10 @@
                 <textarea required placeholder="Введите комментарий" name="comment" id="comment"></textarea><br>
                 <label for="date">Дата публикации статьи:</label>
                 <input type="date" id="date" name="date"><br>
-                <label for="author">Автор:</label>
-                <input type="text" id="author" name="author" placeholder="Введите имя (никнейм)"><br>
-                <label for="art-number">Номер статьи:</label>
-                <input type="number" id="art-number" name="art-number" placeholder="Укажите номер статьи"><br>
+                <label for="author">Автор по ID:</label>
+                <input type="number" id="author" name="author" placeholder="Укажите ID автора"><br>
+                <label for="article_number">Номер статьи по ID:</label>
+                <input type="number" id="article_number" name="article_number" placeholder="Укажите ID статьи"><br>
                 <div class="wrapper-btn">
                     <input class="sub-btn-link" type="submit" value="Добавить">
                 </div>
