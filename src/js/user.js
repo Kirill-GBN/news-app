@@ -1,6 +1,8 @@
+let usersList = [];
+
 
 // Cписок пользователей, которые будут в таблице изначально
-let usersList = [
+let defaultUsersList = [
     {
         id: 1,
         nickname: "Бэтмен",
@@ -32,6 +34,24 @@ let usersList = [
     },
 ];
 
+let selectedRowId;
+
+function saveUsersListToLocalStorage(array) {
+    const arrayString = JSON.stringify(array);
+    window.localStorage.setItem("users", arrayString);
+  }
+  
+  function getUsersListFromLocalStorage() {
+    const value = window.localStorage.getItem("users");
+    let result = JSON.parse(value);
+  
+    if (result === null) {
+      result = defaultUsersList;
+    }
+    return result;
+  }
+
+
 //функция для добавления строк в таблицу (инициализация таблицы)
 function addRows() {
     usersList.forEach((item) => {
@@ -56,14 +76,15 @@ function addRow(userData) {
     const online = document.createElement("input");
     const label = document.createElement("label");
     online.setAttribute("type", "checkbox");
-    online.setAttribute("checked", true);
+    // online.setAttribute("checked", true);
     online.classList.add("status");
     label.setAttribute("for", "status");
     label.setAttribute("data-onlabel", "В сети");
     label.setAttribute("data-offlabel", "Не в сети");
     label.classList.add("lb", "lb_table", "view");
 
-    if (userData.id <= 5 || userData.status === "on") {
+    if (userData.id <= 5 || userData.status !== $(online).attr("checked")) {
+        online.setAttribute("checked", true)
         statusEl.append(online, label);
     } else {
         online.removeAttribute("checked");
@@ -77,6 +98,20 @@ function addRow(userData) {
     editEl.innerText = "Редактировать";
     editEl.classList.add("edit-btn");
     editEl.onclick = function () {
+        $('#status').prop('click', function () {
+            if ($(online).attr("checked")) {
+                return $('#status').prop("checked", true);
+
+            } else if ($(online).attr("checked", false)) {
+                return $('#status').prop("checked", false);
+
+            } else if ($('#status').prop("checked", false)) {
+                return $(online).attr("checked", false);
+
+            } else if ($('#status').prop("checked")) {
+                return $(online).attr("checked", true);
+            }
+        });
         // вызов функции для изменения строки
         updateForm(userData);
     };
@@ -105,6 +140,7 @@ function addRow(userData) {
 function removeRowFromTable(userData) {
     const result = confirm("Вы действительно хотите удалить пользователя?");
     if (result) {
+        saveUsersListToLocalStorage(usersList);
         // articlesList = articlesList.filter((item) => item.id !== articleData.id);
         removeRow(userData);
     }
@@ -129,6 +165,7 @@ function getRandomIntInclusive(min, max) {
 function addUser(data) {
     data.id = getRandomIntInclusive(0, 1000);
     usersList.push(data);
+    saveUsersListToLocalStorage(usersList);
     addRow(data);
 }
 
@@ -141,11 +178,11 @@ function clearForm() {
     $("#email").val(function () {
         return "";
     });
-    $("#status").html(function () {
-        return "";
-        //////возможно здесть что-то поменять
+    $("#status").val(function () {
+        return $("#status").prop("checked", false);
     });
 }
+
 
 //функция для обновления данных формы
 function updateForm(userData) {
@@ -158,12 +195,13 @@ function updateForm(userData) {
     $("#email").val(function () {
         return cells[2].innerText;
     });
-    $('#status').on('click', function () {
-        if ($('#status').is(':checked')) {
-            return statusEl
-        } else {
-            return "";
-        } /// возможно тут поменять
+    $('#status').val(function () {
+        return cells[3].innerHTML;
+        // if ($('#status').prop("checked", true)) {
+        //     return cells[3].innerHTML === $(online).attr('checked')
+        // } else {
+        //     return "";
+        // } 
     });
 
 
@@ -172,10 +210,14 @@ function updateForm(userData) {
         return "Изменить";
     });
 
+    if ($(".submit-btn-red").length > 0) {
+        return;
+    }
+
 
     // добавление новой кнопки для отмены
     const cancelEl = document.createElement("input");
-    cancelEl.classList.add("sub-btn-link", "submit-btn-red");
+    cancelEl.classList.add("submit-btn-red", "cancel-btn");
     cancelEl.setAttribute("type", "button");
     cancelEl.setAttribute("value", "Отменить");
     cancelEl.onclick = function () {
@@ -188,13 +230,14 @@ function updateForm(userData) {
 
 // изменение записи в массиве
 function updateUser(data) {
+    data.id = selectedRowId;
     usersList = usersList.map((item) => {
         if (item.id === Number(data.id)) {
             return data;
         }
         return item;
     });
-
+    saveUsersListToLocalStorage(usersList);
     updateRow(userData);
 }
 
@@ -204,7 +247,7 @@ function updateRow(userData) {
     const cells = $("#" + selectedRowId + "-row").children();
     cells[1].innerText = userData.nickname;
     cells[2].innerText = userData.email;
-    cells[3].innerText = userData.status;
+    cells[3].innerHTML = $("#status").val();;
     ///// возможно тут что-то поменть
 }
 
@@ -221,9 +264,15 @@ function returnAddBtn() {
 
 
 
-$(document).ready(function () {
-    addRows();
 
+$(document).ready(function () {
+    usersList = getUsersListFromLocalStorage();
+    addRows();
+    document.getElementById('reset').onclick = function () {
+        localStorage.clear();
+        location.reload(); 
+    };
+    
     // событие submit для добавления новой строчки в таблицу
     $("#form-content").submit(function (event) {
         const formData = new FormData(event.target);
@@ -237,6 +286,7 @@ $(document).ready(function () {
             returnAddBtn();
         }
         clearForm();
+        returnAddBtn();
         return false;
     });
 

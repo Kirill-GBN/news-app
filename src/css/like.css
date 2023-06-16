@@ -1,3 +1,18 @@
+body::after {
+    content: "";
+    width: 100%;
+    background-color: #2bff00;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.18;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    z-index: -1;
+}
+
 caption {
     margin-top: 25px;
     margin-bottom: 25px;
@@ -43,9 +58,23 @@ tr:nth-child(odd) {
 }
 
 .table-form {
+    opacity: 0;
+    transition: .5s;
+    animation: show 1s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 0.6s;
     display: flex;
     margin: 0;
     padding: 0;
+}
+
+@keyframes show {
+    0%{
+        opacity: 0; 
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .table-box {
@@ -88,7 +117,38 @@ label {
     cursor: pointer;
 }
 
-.sub-btn-link {
+.like {
+    display: none;
+}
+
+  
+.like:checked + label {
+    -webkit-filter: none;
+            filter: none;
+}
+
+  
+  [for='like'] {
+    align-self: center;
+    position: relative;
+    color: #888;
+    font-size: 2.2em;
+    -webkit-filter: grayscale(1);
+            filter: grayscale(1);
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    cursor: pointer;
+    margin-top: -7px;
+    margin-bottom: 20px;
+}
+
+label {
+    cursor: pointer;
+}
+
+.sub-btn-link, .cancel-btn, .sub-btn-link-def {
     font-size: 20px; 
     font-family: 'Franklin Gothic Medium', sans-serif; 
     color: rgb(128, 0, 0); 
@@ -104,13 +164,17 @@ label {
     cursor: pointer;
 }
     
-.sub-btn-link:hover {
+.sub-btn-link:hover, .cancel-btn:hover, .sub-btn-link-def:hover {
     color: #d63ceb;
     cursor: pointer;
     transition: .3s;
     transition: color 0.5s;
     background-color: #c0f72a;
 }
+
+.sub-btn-link-def {
+    margin-bottom: 30px;
+}   
     
 
 .wrapper-btn {
@@ -123,13 +187,15 @@ label {
     background-color: rgba(255, 1, 1, 0.774);
 }
 
-.edit-btn {
+/* .edit-btn {
     color: rgb(12, 88, 24);
     margin-bottom: 7px;
-}
+} */
 
 .remove-btn {
     color: rgb(207, 11, 11);
+    font-family: 'Franklin Gothic Medium', sans-serif; 
+    cursor: pointer;
 }
 
 .edit-btn:hover {

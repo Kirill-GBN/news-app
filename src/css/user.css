@@ -1,3 +1,18 @@
+body::after {
+    content: "";
+    width: 100%;
+    background-color: #ffb758;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.18;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    z-index: -1;
+}
+
 caption {
     margin-top: 25px;
     margin-bottom: 25px;
@@ -19,6 +34,8 @@ table, th, td {
 
 th, td {
     padding: 10px;
+    max-width: 150px;
+    word-wrap: break-word;
 }
 
 th {
@@ -43,14 +60,44 @@ tr:nth-child(odd) {
 }
 
 .table-form {
+    opacity: 0;
+    transition: .5s;
+    animation: show 1s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 0.5s;
     display: flex;
     margin: 0;
     padding: 0;
 }
 
+@keyframes show {
+    0%{
+        opacity: 0; 
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 .table-box {
     margin: 0;
     padding: 0;
+    left: 1800px;
+    transition: .5s;
+    animation: left 1.5s 1;
+    animation-fill-mode:inherit;
+    animation-delay: 0.4s;
+    position: relative;
+    display: flex;
+}
+
+@keyframes left {
+    0%{
+        right: 100px; 
+    }
+    100% {
+        left: 10px;
+    }
 }
 
 
@@ -64,7 +111,15 @@ tr:nth-child(odd) {
     border: 2px solid black;
     border-radius: 15px;
     background-color: rgba(64, 238, 180, 0.637);
-    max-height: 500px;
+    max-height: 470px;
+    position: fixed;
+    margin-left: 950px;
+    margin-right: 0px;
+    opacity: 0;
+    transition: .5s;
+    animation: show 1s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 1.3s;
 }
 
 #form-content {
@@ -168,14 +223,14 @@ border-radius: 50%;
 
     
 
-.sub-btn-link {
+.sub-btn-link, .cancel-btn, .sub-btn-link-def {
     font-size: 20px; 
     font-family: 'Franklin Gothic Medium', sans-serif; 
     color: rgb(128, 0, 0); 
     text-decoration: none;
     cursor: pointer; 
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     background-color: #e29ccb;
     box-sizing: border-box;
     border: none;
@@ -184,7 +239,7 @@ border-radius: 50%;
     cursor: pointer;
 }
     
-.sub-btn-link:hover {
+.sub-btn-link:hover, .cancel-btn:hover, .sub-btn-link-def:hover {
     color: #d63ceb;
     cursor: pointer;
     transition: .3s;
@@ -197,27 +252,37 @@ border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: -20px;
 }
 
 .submit-btn-red {
     background-color: rgba(255, 1, 1, 0.774);
+    margin-left: 20px;
 }
 
 .edit-btn {
     color: rgb(12, 88, 24);
     margin-bottom: 7px;
+    font-family: 'Franklin Gothic Medium', sans-serif; 
+    cursor: pointer;
 }
 
 .remove-btn {
     color: rgb(207, 11, 11);
+    font-family: 'Franklin Gothic Medium', sans-serif; 
+    cursor: pointer;
 }
 
 .edit-btn:hover {
     text-decoration: underline;
     opacity: 55%;
 }
-
- .remove-btn:hover {
+.cursor {
+    cursor: default;
+    pointer-events: none;
+   }
+   
+.remove-btn:hover {
     text-decoration: underline;
     opacity: 55%;
 }

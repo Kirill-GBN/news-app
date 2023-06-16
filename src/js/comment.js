@@ -42,6 +42,8 @@ let commentsList = [
     },
 ];
 
+let selectedRowId;
+
 //функция для добавления строк в таблицу (инициализация таблицы)
 function addRows() {
     commentsList.forEach((item) => {
@@ -66,17 +68,6 @@ function addRow(commentData) {
     const article_numberEl = document.createElement("td");
     article_numberEl.innerText = commentData?.article_number;
 
-
-    // добавление ячейки "Статус"
-    // const statusEl = document.createElement("td");
-    // const online = document.createElement('input')
-    // online.setAttribute("type", "checkbox");
-    // online.setAttribute('value', 'checked');
-    // online.type = 'checkbox';
-    // online.classList.add("lb::before");
-    // statusEl.append(online);
-    // likeEl.classList.add("unchecked");
-    //if() //////возможно здесть что-то поменять
     
     // создание кнопки "Редактировать"
     const actionEl = document.createElement("td");
@@ -196,6 +187,7 @@ function updateForm(commentData) {
 
 // изменение записи в массиве
 function updateComment(data) {
+    data.id = selectedRowId;
     commentsList = commentsList.map((item) => {
         if (item.id === Number(data.id)) {
             return data;

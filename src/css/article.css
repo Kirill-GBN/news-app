@@ -1,7 +1,6 @@
 body::after {
     content: "";
     width: 100%;
-    /* background: url(../img/Новости.jpg); */
     background-color: #d030e6;
     background-repeat: no-repeat;
     background-size: cover;
@@ -34,7 +33,7 @@ table, th, td {
 
 th, td {
     padding: 10px;
-    max-width: 150px;
+    max-width: 130px;
     word-wrap: break-word;
 }
 
@@ -60,17 +59,45 @@ tr:nth-child(odd) {
 }
 
 .table-form {
+    opacity: 0;
+    transition: .5s;
+    animation: show 1s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 0.6s;
     display: flex;
     margin: 0;
     padding: 0;
 }
 
+@keyframes show {
+    0%{
+        opacity: 0; 
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 .table-box {
     margin: 0;
     padding: 0;
-    max-width: 870px;
+    max-width: 860px;
+    left: -1000px;
+    transition: .5s;
+    animation: right 1.2s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 0.9s;
+    position: relative;
 }
 
+@keyframes right {
+    0%{
+        right: 0; 
+    }
+    100% {
+        left: 10px;
+    }
+}
 
 .form-box {
     justify-content: center;
@@ -148,14 +175,14 @@ label {
     cursor: auto;
 }
 
-.sub-btn-link, .cancel-btn {
+.sub-btn-link, .cancel-btn, .sub-btn-link-def {
     font-size: 20px; 
     font-family: 'Franklin Gothic Medium', sans-serif; 
     color: rgb(128, 0, 0); 
     text-decoration: none;
     cursor: pointer; 
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     background-color: #e29ccb;
     box-sizing: border-box;
     border: none;
@@ -164,14 +191,17 @@ label {
     cursor: pointer;
 }
     
-.sub-btn-link:hover, .cancel-btn:hover {
+.sub-btn-link:hover, .cancel-btn:hover, .sub-btn-link-def:hover {
     color: #d63ceb;
     cursor: pointer;
     transition: .3s;
     transition: color 0.5s;
     background-color: #c0f72a;
 }
-    
+
+.sub-btn-link-def {
+    margin-bottom: 30px;
+}    
 
 .wrapper-btn {
     display: flex;
@@ -202,14 +232,14 @@ label {
     opacity: 55%;
 }
 
-.checked {
+/* .checked {
     color: yellow;
 }
 
 .unchecked {
     color: transparent;
     text-shadow: 0 0 0 #888;
-}
+} */
 
 .cursor {
  cursor: default;

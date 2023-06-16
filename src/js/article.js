@@ -1,6 +1,8 @@
+let articlesList = [];
+
 
 // Cписок статей по умолчанию, которые будут в таблице изначально
-let articlesList = [
+let defaultArticlesList = [
     {
         id: 1,
         title: "Мир во всём Мире",
@@ -47,6 +49,35 @@ let articlesList = [
     },
 ];
 
+let selectedRowId;
+
+function saveArticlesListToLocalStorage(array) {
+    const arrayString = JSON.stringify(array);
+    window.localStorage.setItem("articles", arrayString);
+};
+
+function updateArticlesListToLocalStorage(array) {
+    const NewArrayString = JSON.stringify(array);
+    window.localStorage.setItem("articles", NewArrayString);
+};
+
+function getArticlesListFromLocalStorage() {
+    const value = window.localStorage.getItem("articles");
+    let result = JSON.parse(value);
+
+    if (result === null) {
+        result = defaultArticlesList;
+    }
+    return result;
+};
+
+
+//   function defaultData() {
+//     localStorage.clear();
+//     // location.reload();
+//   };
+
+
 //функция для добавления строк в таблицу (инициализация таблицы)
 function addRows() {
     articlesList.forEach((item) => {
@@ -74,19 +105,22 @@ function addRow(articleData) {
     const ratingEl = document.createElement("td");
     ratingEl.innerText = articleData?.rating;
 
+
     // добавление ячейки "Лайк"
     const likeEl = document.createElement("td");
     const finger = document.createElement("input");
     const label = document.createElement("label");
     label.innerHTML = '&#128077';
     finger.setAttribute("type", "checkbox");
-    finger.setAttribute("checked", true);
+    // finger.setAttribute("checked", true);
     finger.classList.add("like");
     label.classList.add("cursor");
     label.setAttribute("for", "like");
     label.setAttribute("aria-label", "like");
-    
-    if (articleData.id <= 5 || articleData.like === "on") {
+    // likeEl.append(finger, label);
+
+    if (articleData.id <= 5 || articleData.like !== $(finger).attr("checked") || articleData.like === "on" || $('like').prop("checked") === true) {
+        finger.setAttribute("checked", true)
         likeEl.append(finger, label);
     } else {
         finger.removeAttribute("checked");
@@ -95,16 +129,16 @@ function addRow(articleData) {
 
     //доп. класс
     // label.classList.add("checked");
-    
+
     //варинат через доп. класс
     // if (articleData.like === "on") {
     //     label.classList.add("checked")
     // } else {
     //     label.classList.add("unchecked")
     // }
-    
+
     // likeEl.append(finger, label);
-    
+
     // вариант через цикл for
     // for (let elem of articlesList) {
     //     if (elem.id <= 5 || articleData.like === "on") {
@@ -121,8 +155,24 @@ function addRow(articleData) {
     editEl.innerText = "Редактировать";
     editEl.classList.add("edit-btn");
     editEl.onclick = function () {
+        $('#like').prop('click', function () {
+            if ($(finger).attr("checked") || articleData.like === "on") {
+                $('#like').prop("checked", true);
+
+            } else if ($(finger).attr("checked", false) || articleData.like === "" || articleData.like !== true) {
+                $('#like').prop("checked", false);
+
+            } else if ($('#like').prop("checked", true)) {
+                $(finger).attr("checked");
+
+            } else if ($('#like').prop("checked", false)) {
+                $(finger).attr("checked", false);
+            }
+        });
         // вызов функции для изменения строки
+        updateArticlesListToLocalStorage(articlesList);
         updateForm(articleData);
+        
     };
 
     // создание кнопки "Удалить"
@@ -131,7 +181,9 @@ function addRow(articleData) {
     removeEl.classList.add("remove-btn");
     removeEl.onclick = function () {
         // вызов функции для удаления строки
+        
         removeRowFromTable(articleData);
+        // window.localStorage.removeItem("articles");
     };
     actionEl.append(editEl, removeEl);
 
@@ -149,6 +201,8 @@ function addRow(articleData) {
 function removeRowFromTable(articleData) {
     const result = confirm("Вы действительно хотите удалить статью?");
     if (result) {
+        window.localStorage.removeItem("articles");
+        saveArticlesListToLocalStorage(articlesList);
         // articlesList = articlesList.filter((item) => item.id !== articleData.id);
         removeRow(articleData);
     }
@@ -173,6 +227,7 @@ function getRandomIntInclusive(min, max) {
 function addArticle(data) {
     data.id = getRandomIntInclusive(0, 1000);
     articlesList.push(data);
+    saveArticlesListToLocalStorage(articlesList);
     addRow(data);
 }
 
@@ -194,13 +249,15 @@ function clearForm() {
     $("#rating").val(function () {
         return "";
     });
-    $("#like").html(function () {
+    $("#like").val(function () {
         return $("#like").prop("checked", false);
     });
 }
 
+
 //функция для обновления данных формы
 function updateForm(articleData) {
+    // updateArticlesListToLocalStorage(articlesList);
     selectedRowId = articleData?.id;
     // с помощью метода children мы получаем дочерние элемента (ячейки таблицы) строки с id '{n}-row'
     const cells = $("#" + selectedRowId + "-row").children();
@@ -220,27 +277,52 @@ function updateForm(articleData) {
         return cells[5].innerText;
     });
     // $("#like").prop(cells[6].innerHTML?true:false);
-    
-    $("#like").html(function () {
-        if (articleData.like === 'on') {
-            return $("#like").prop(cells[6].innerHTML = "checked", true);
-        }
-        
+
+    $("#like").val(function () {
+        return cells[6].innerHTML;
+        // $('#like').prop('click', function () {
+        //     if ($('#like').prop('checked', true)) {
+        //         return cells[6].innerHTML.finger.removeAttribute("checked");
+        //     } else {
+        //         return finger.removeAttribute("checked");
+        //     }
+        // });
+
+
+        // if ($("#like").prop("checked", true)) {
+        //     return cells[6].innerHTML
+        // } else {
+        //     return finger.removeAttribute("checked");
+        // }
+
+        // else {
+        //     return $("#like").cells[6].innerHTML;
+        // };
+
+        // if (articleData.like === 'on') {
+        //     finger.removeAttribute("checked");
+        //     likeEl.append(finger, label);
+        //     return cells[6].innerHTML;
+        // }
+
+        // if ($('#like').is(":checked")) {
+        //     return $("#like").prop(cells[6].innerHTML);
+        // }
+
         // if (articleData.like === "on") {
         // return cells[6].innerHTML;
         // } else {
         //     finger.removeAttribute("checked");
         //     return cells[6].innerText = likeEl.append(finger, label);
         // }    
-        
+
         // if ($("#like").prop("checked") === 'on') {
         //     return cells[6].innerHTML;;
         // } else {
         //     return cells[6] = "";
         // }
     });
-    
-    
+
     // if ($('.like').is(":checked")) {
     //     return $("#like").prop("checked", false);
     // } else {
@@ -256,14 +338,14 @@ function updateForm(articleData) {
     //     } /// возможно тут поменять
     // });
 
-
+    updateArticlesListToLocalStorage(articlesList);
     // изменение текста кнопки "Добавить" на "Изменить"
     $(".sub-btn-link").val(function () {
         return "Изменить";
     });
 
     if ($(".submit-btn-red").length > 0) {
-        return; 
+        return;
     }
 
     // добавление новой кнопки для отмены
@@ -273,23 +355,27 @@ function updateForm(articleData) {
     cancelEl.setAttribute("value", "Отменить");
     cancelEl.onclick = function () {
         returnAddBtn();
-       
+
     };
     
-     $(".wrapper-btn").append(cancelEl);
+    $(".wrapper-btn").append(cancelEl);
+    // updateArticlesListToLocalStorage(articlesList);
 }
 
 
 // изменение записи в массиве
 function updateArticle(data) {
+    data.id = selectedRowId;
     articlesList = articlesList.map((item) => {
         if (item.id === Number(data.id)) {
             return data;
         }
         return item;
     });
-
+    saveArticlesListToLocalStorage(articlesList);
+    // updateArticlesListToLocalStorage(articlesList);
     updateRow(articleData);
+    // returnAddBtn();
 }
 
 
@@ -301,9 +387,27 @@ function updateRow(articleData) {
     cells[3].innerText = articleData.date;
     cells[4].innerText = articleData.subject;
     cells[5].innerText = articleData.rating;
-    cells[6].innerHTML = articleData.like;
+    cells[6].innerHTML = articleData.like = $('#like').val();
+    // updateArticlesListToLocalStorage(articlesList);
     ///// возможно тут что-то поменть
 }
+
+
+// function changeLike() {
+//     if ($('#like').prop("checked", false)) {
+//         return $(finger).attr("checked");
+
+//     } else if ($('#like').prop("checked", false)) {
+//         return $(finger).attr("checked", false);
+
+//     } else if ($('#like').prop("checked", false)) {
+//         return $(finger).attr("checked", false);
+
+//     } else {
+//         return false;
+//     }
+// }
+
 
 
 // удаление кнопки "Отмена" и изменение кнопки "Изменить" на кнопку "Добавить"
@@ -319,7 +423,13 @@ function returnAddBtn() {
 
 
 $(document).ready(function () {
+    articlesList = getArticlesListFromLocalStorage();
     addRows();
+    // defaultData();
+    document.getElementById('reset').onclick = function () {
+        localStorage.clear();
+        location.reload();
+    };
 
     // событие submit для добавления новой строчки в таблицу
     $("#form-content").submit(function (event) {
@@ -330,10 +440,12 @@ $(document).ready(function () {
             data.id = getRandomIntInclusive(0, 1000);
             addArticle(data);
         } else if (value === "Изменить") {
+            // updateArticlesListToLocalStorage(articlesList);
             updateRow(data);
+            // updateArticlesListToLocalStorage(articlesList);
         }
         clearForm();
+        returnAddBtn();
         return false;
     });
-
 });

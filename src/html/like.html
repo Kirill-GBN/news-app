@@ -11,6 +11,8 @@
     <script src="/news-app/node_modules/lovefield/dist/lovefield.min.js"></script>
     <script type="module" src="../js/index.js"></script>
     <script src="../js/like.js"></script>
+    <!-- <script type="module" src="../js/article.js"></script> -->
+    <!-- <script type="module" src="../js/user.js"></script>  -->
 </head>
 <body>
 
@@ -32,8 +34,8 @@
                 <caption>Лайки</caption>
                 <tr>
                     <th>#</th>
-                    <th>Номер статьи</th>
-                    <th>Номер пользователя</th>
+                    <th>Статья</th>
+                    <th>Пользователь</th>
                     <th>Информация о лайках</th>
                     <th>Действия</th>
                 </tr>
@@ -45,16 +47,16 @@
     
             <form id="form-content">
                 <h2>Панель упраления</h2> 
-                <label for="art-number">Номер (ID) статьи:</label>
-                <select type="number" id="art-number" name="art-number"></select><br>
-                <label for="user-number">Номер (ID) пользователя:</label>
-                <select type="number" id="user-number" name="user-number"></select><br>
+                <label for="art_number">Номер (ID) статьи:</label>
+                <select type="number" id="art_number" name="art_number"></select><br>
+                <label for="user_number">Номер (ID) пользователя:</label>
+                <select type="number" id="user_number" name="user_number"></select><br>
                 <div class="wrapper-btn">
                     <input class="sub-btn-link" type="submit" value="Проверить">
                 </div>
                 
             </form>
-    
+            <button id="reset" class="sub-btn-link-def">Сброс данных</button>
         </div>
     
     </div>
