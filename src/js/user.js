@@ -1,55 +1,21 @@
 let usersList = [];
 
-
-// Cписок пользователей, которые будут в таблице изначально
-let defaultUsersList = [
-    {
-        id: 1,
-        nickname: "Бэтмен",
-        email: 'bat@mail.ru',
-    },
-
-    {
-        id: 2,
-        nickname: "Железный человек",
-        email: 'ironman@gmail.com',
-    },
-
-    {
-        id: 3,
-        nickname: "Человек паук",
-        email: 'spider@mail.ru',
-    },
-
-    {
-        id: 4,
-        nickname: "Супермен",
-        email: 'super@mail.ru',
-    },
-
-    {
-        id: 5,
-        nickname: "Тор",
-        email: 'thor@gmail.com',
-    },
-];
-
 let selectedRowId;
 
-function saveUsersListToLocalStorage(array) {
-    const arrayString = JSON.stringify(array);
-    window.localStorage.setItem("users", arrayString);
-  }
-  
-  function getUsersListFromLocalStorage() {
-    const value = window.localStorage.getItem("users");
-    let result = JSON.parse(value);
-  
-    if (result === null) {
-      result = defaultUsersList;
-    }
-    return result;
-  }
+// function saveUsersListToLocalStorage(array) {
+//     const arrayString = JSON.stringify(array);
+//     window.localStorage.setItem("users", arrayString);
+//   }
+
+//   function getUsersListFromLocalStorage() {
+//     const value = window.localStorage.getItem("users");
+//     let result = JSON.parse(value);
+
+//     if (result === null) {
+//       result = defaultUsersList;
+//     }
+//     return result;
+//   }
 
 
 //функция для добавления строк в таблицу (инициализация таблицы)
@@ -57,7 +23,7 @@ function addRows() {
     usersList.forEach((item) => {
         addRow(item);
     });
-}
+};
 
 //функция для добавления ячейки в строку
 function addRow(userData) {
@@ -90,7 +56,7 @@ function addRow(userData) {
         online.removeAttribute("checked");
         statusEl.append(online, label);
     }
-    
+
 
     // создание кнопки "Редактировать"
     const actionEl = document.createElement("td");
@@ -138,12 +104,19 @@ function addRow(userData) {
 
 // вызов окна для подтверждения удаления строки
 function removeRowFromTable(userData) {
+    // if (CheckUser(userData)) {
+    //     return
+    // }
     const result = confirm("Вы действительно хотите удалить пользователя?");
     if (result) {
-        saveUsersListToLocalStorage(usersList);
-        // articlesList = articlesList.filter((item) => item.id !== articleData.id);
-        removeRow(userData);
+        usersList = usersList.filter((item) => item.id !== userData.id);
+        localStorage.setItem("usersList", JSON.stringify(usersList));
+        removeRow(userData, "usersList");
     }
+    // if (result) {
+    //     // articlesList = articlesList.filter((item) => item.id !== articleData.id);
+    //     removeRow(userData);
+    // }
 }
 
 
@@ -165,7 +138,7 @@ function getRandomIntInclusive(min, max) {
 function addUser(data) {
     data.id = getRandomIntInclusive(0, 1000);
     usersList.push(data);
-    saveUsersListToLocalStorage(usersList);
+    localStorage.setItem("usersList", JSON.stringify(usersList));
     addRow(data);
 }
 
@@ -223,22 +196,26 @@ function updateForm(userData) {
     cancelEl.onclick = function () {
         returnAddBtn();
     };
-    
-     $(".wrapper-btn").append(cancelEl);
+
+    $(".wrapper-btn").append(cancelEl);
 }
 
 
 // изменение записи в массиве
 function updateUser(data) {
-    data.id = selectedRowId;
-    usersList = usersList.map((item) => {
-        if (item.id === Number(data.id)) {
-            return data;
-        }
-        return item;
-    });
-    saveUsersListToLocalStorage(usersList);
-    updateRow(userData);
+    let result = usersList.find(item => item.id.toString() === data.id);
+    let index = usersList.indexOf(result);
+    usersList[index] = data;
+    localStorage.setItem("usersList", JSON.stringify(usersList));
+    updateRow(data);
+    // data.id = selectedRowId;
+    // usersList = usersList.map((item) => {
+    //     if (item.id === Number(data.id)) {
+    //         return data;
+    //     }
+    //     return item;
+    // });
+    // updateRow(userData);
 }
 
 
@@ -249,7 +226,18 @@ function updateRow(userData) {
     cells[2].innerText = userData.email;
     cells[3].innerHTML = $("#status").val();;
     ///// возможно тут что-то поменть
-}
+};
+
+// function CheckUser(data) {
+//     let result = likesList.find(item => item.usersList.toString() === data.id.toString());
+//     if (result !== undefined) {
+//         alert("Вы не можете удалить эти данные, поскольку они используются в другой таблице");
+//         return true
+//     }
+//     else {
+//         return false
+//     }
+// };
 
 
 // удаление кнопки "Отмена" и изменение кнопки "Изменить" на кнопку "Добавить"
@@ -266,13 +254,54 @@ function returnAddBtn() {
 
 
 $(document).ready(function () {
-    usersList = getUsersListFromLocalStorage();
+    const initUsers = JSON.parse(localStorage.getItem('initUsers')) || false;
+    if (!initUsers) {
+        usersList = [
+            {
+                id: 1,
+                nickname: "Бэтмен",
+                email: 'bat@mail.ru',
+            },
+
+            {
+                id: 2,
+                nickname: "Железный человек",
+                email: 'ironman@gmail.com',
+            },
+
+            {
+                id: 3,
+                nickname: "Человек паук",
+                email: 'spider@mail.ru',
+            },
+
+            {
+                id: 4,
+                nickname: "Супермен",
+                email: 'super@mail.ru',
+            },
+
+            {
+                id: 5,
+                nickname: "Тор",
+                email: 'thor@gmail.com',
+            },
+        ];
+
+        localStorage.setItem('usersList', JSON.stringify(usersList));
+
+        localStorage.setItem('initUsers', true);
+    };
+
+    usersList = JSON.parse(localStorage.getItem('usersList'));
+
     addRows();
+
     document.getElementById('reset').onclick = function () {
         localStorage.clear();
-        location.reload(); 
+        location.reload();
     };
-    
+
     // событие submit для добавления новой строчки в таблицу
     $("#form-content").submit(function (event) {
         const formData = new FormData(event.target);

@@ -103,18 +103,18 @@ function addRow(likeData) {
     user_numberEl.innerText = getUserName(likeData?.user_number);
 
 
-    // добавление ячейки "Информаци о лайках"
-    // const likeEl = document.createElement("td");
-    // const finger = document.createElement("input");
-    // const label = document.createElement("label");
-    // label.innerHTML = '&#128077';
-    // finger.setAttribute("type", "checkbox");
-    // finger.setAttribute("checked", true);
-    // finger.classList.add("like");
-    // label.classList.add("cursor");
-    // label.setAttribute("for", "like");
-    // label.setAttribute("aria-label", "like");
-    // likeEl.append(finger, label);
+    //добавление ячейки "Информаци о лайках"
+    const likeEl = document.createElement("td");
+    const finger = document.createElement("input");
+    const label = document.createElement("label");
+    label.innerHTML = '&#128077';
+    finger.setAttribute("type", "checkbox");
+    finger.setAttribute("checked", true);
+    finger.classList.add("like");
+    label.classList.add("cursor");
+    label.setAttribute("for", "like");
+    label.setAttribute("aria-label", "like");
+    likeEl.append(finger, label);
 
     // тут надо сделать так, чтобы при выборе ID статьи и ID пользователя отслеживалось нажатие лайка
     // if (loadedModule.finger.attr("checked") === true) {
@@ -151,6 +151,7 @@ function removeRowFromTable(likeData) {
     const result = confirm("Вы действительно хотите удалить информацию о лайке?");
     if (result) {
         // articlesList = articlesList.filter((item) => item.id !== articleData.id);
+        localStorage.setItem('likesList', JSON.stringify(likesList));
         removeRow(likeData);
     }
 }
@@ -174,9 +175,25 @@ function getRandomIntInclusive(min, max) {
 function addLike(data) {
     data.id = getRandomIntInclusive(0, 1000);
     likesList.push(data);
+    localStorage.setItem('likesList', JSON.stringify(likesList));
     addRow(data);
 }
 
+function updateLike(data) {
+    let result = likesList.find(item => item.id.toString() === data.id);
+    let index = likesList.indexOf(result);
+    likesList[index] = data;
+    localStorage.setItem("likes", JSON.stringify(likesList));
+    updateRow(data);
+}
+
+
+// изменение данных в строке
+function updateRow(likeData) {
+    const cells = $("#" + selectedRowId + "-row").children();
+    cells[1].innerText = likeData.art_number;
+    cells[2].innerText = likeData.user_number;
+}
 
 // очистка формы
 function clearForm() {
@@ -303,19 +320,16 @@ $(document).ready(function () {
             },
         ];
 
-        localStorage.setItem('articles', JSON.stringify(articlesList));
+        localStorage.setItem('articlesList', JSON.stringify(articlesList));
         localStorage.setItem('initOne', true);
     }
 
-    articlesList = JSON.parse(localStorage.getItem('articles'));
+    articlesList = JSON.parse(localStorage.getItem('articlesList'));
 
     $.each(articlesList, function (index, value) {
         $('#art_number').append('<option value="' + value.title + '">' + value.id + '</option>');
     });
 
-    // $.each(usersList, function (index, value) {
-    //     $('#user_number').append('<option value="' + value.nickname + '">' + value.id + '</option>');
-    // });
 
     const initTwo = JSON.parse(localStorage.getItem('initTwo')) || false;
     if (!initTwo) {
@@ -351,11 +365,11 @@ $(document).ready(function () {
             },
         ];
 
-        localStorage.setItem('users', JSON.stringify(usersList));
+        localStorage.setItem('usersList', JSON.stringify(usersList));
         localStorage.setItem('initTwo', true);
     }
 
-    usersList = JSON.parse(localStorage.getItem('users'));
+    usersList = JSON.parse(localStorage.getItem('usersList'));
 
     // $.each(articlesList, function (index, value) {
     //     $('#art_number').append('<option value="' + value.title + '">' + value.id + '</option>');
@@ -364,7 +378,31 @@ $(document).ready(function () {
     $.each(usersList, function (index, value) {
         $('#user_number').append('<option value="' + value.nickname + '">' + value.id + '</option>');
     });
+    
+    // likesList = JSON.parse(localStorage.getItem('likesList'));
     addRows();
+    
+    $(document).ready(function () {
+        // addRows();
+    
+        document.getElementById('reset').onclick = function () {
+            window.localStorage.removeItem('likesList');
+            location.reload();
+        };
+        // событие submit для добавления новой строчки в таблицу
+        $("#form-content").submit(function (event) {
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            const value = $(".sub-btn-link").val();
+            if (value === "Проверить") {
+                data.id = getRandomIntInclusive(0, 1000);
+                addLike(data);
+            }
+            clearForm();
+            return false;
+        });
+    
+    });
 });
 
 // $(document).ready(function () {
@@ -384,24 +422,3 @@ function getArticleLike(like) {
 }
 
 
-$(document).ready(function () {
-    addRows();
-
-    document.getElementById('reset').onclick = function () {
-        localStorage.clear();
-        location.reload();
-    };
-    // событие submit для добавления новой строчки в таблицу
-    $("#form-content").submit(function (event) {
-        const formData = new FormData(event.target);
-        const data = Object.fromEntries(formData);
-        const value = $(".sub-btn-link").val();
-        if (value === "Проверить") {
-            data.id = getRandomIntInclusive(0, 1000);
-            addLike(data);
-        }
-        clearForm();
-        return false;
-    });
-
-});

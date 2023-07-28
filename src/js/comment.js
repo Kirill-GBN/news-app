@@ -1,46 +1,5 @@
-
 // Cписок комментариев, которые будут в таблице изначально
-let commentsList = [
-    {
-        id: 1,
-        comment: "Статья понравилась",
-        date: '2023-01-10',
-        author: 1,
-        article_number: 1
-    },
-
-    {
-        id: 2,
-        comment: "Статья понравилась",
-        date: '2023-01-10',
-        author: 2,
-        article_number: 2
-    },
-
-    {
-        id: 3,
-        comment: "Статья понравилась",
-        date: '2023-01-10',
-        author: 3,
-        article_number: 3
-    },
-
-    {
-        id: 4,
-        comment: "Статья понравилась",
-        date: '2023-01-10',
-        author: 4,
-        article_number: 4
-    },
-
-    {
-        id: 5,
-        comment: "Статья понравилась",
-        date: '2023-01-10',
-        author: 5,
-        article_number: 5
-    },
-];
+let commentsList = [];
 
 let selectedRowId;
 
@@ -68,7 +27,7 @@ function addRow(commentData) {
     const article_numberEl = document.createElement("td");
     article_numberEl.innerText = commentData?.article_number;
 
-    
+
     // создание кнопки "Редактировать"
     const actionEl = document.createElement("td");
     const editEl = document.createElement("div");
@@ -103,9 +62,15 @@ function addRow(commentData) {
 function removeRowFromTable(commentData) {
     const result = confirm("Вы действительно хотите удалить комментарий?");
     if (result) {
-        // articlesList = articlesList.filter((item) => item.id !== articleData.id);
-        removeRow(commentData);
+        commentsList = commentsList.filter((item) => item.id !== commentData.id);
+        localStorage.setItem("commentsList", JSON.stringify(commentsList));
+        removeRow(commentData, "commentsList");
     }
+    
+    // if (result) {
+    //     // articlesList = articlesList.filter((item) => item.id !== articleData.id);
+    //     removeRow(commentData);
+    // }
 }
 
 
@@ -127,6 +92,7 @@ function getRandomIntInclusive(min, max) {
 function addComment(data) {
     data.id = getRandomIntInclusive(0, 1000);
     commentsList.push(data);
+    localStorage.setItem("commentsList", JSON.stringify(commentsList));
     addRow(data);
 }
 
@@ -171,31 +137,40 @@ function updateForm(commentData) {
         return "Изменить";
     });
 
+    if ($(".submit-btn-red").length > 0) {
+        return;
+    }
+
 
     // добавление новой кнопки для отмены
     const cancelEl = document.createElement("input");
-    cancelEl.classList.add("sub-btn-link", "submit-btn-red");
+    cancelEl.classList.add("submit-btn-red", "cancel-btn");
     cancelEl.setAttribute("type", "button");
     cancelEl.setAttribute("value", "Отменить");
     cancelEl.onclick = function () {
         returnAddBtn();
     };
-    
-     $(".wrapper-btn").append(cancelEl);
+
+    $(".wrapper-btn").append(cancelEl);
 }
 
 
 // изменение записи в массиве
 function updateComment(data) {
-    data.id = selectedRowId;
-    commentsList = commentsList.map((item) => {
-        if (item.id === Number(data.id)) {
-            return data;
-        }
-        return item;
-    });
+    let result = commentsList.find(item => item.id.toString() === data.id);
+    let index = commentsList.indexOf(result);
+    commentsList[index] = data;
+    localStorage.setItem("commentsList", JSON.stringify(commentsList));
+    updateRow(data);
+    // data.id = selectedRowId;
+    // commentsList = commentsList.map((item) => {
+    //     if (item.id === Number(data.id)) {
+    //         return data;
+    //     }
+    //     return item;
+    // });
 
-    updateRow(commentData);
+    // updateRow(commentData);
 }
 
 
@@ -222,8 +197,64 @@ function returnAddBtn() {
 
 
 $(document).ready(function () {
+    const initComments = JSON.parse(localStorage.getItem('initComments')) || false;
+    if (!initComments) {
+        commentsList = [
+            {
+                id: 1,
+                comment: "Статья понравилась",
+                date: '2023-01-10',
+                author: 1,
+                article_number: 1
+            },
+
+            {
+                id: 2,
+                comment: "Статья понравилась",
+                date: '2023-01-10',
+                author: 2,
+                article_number: 2
+            },
+
+            {
+                id: 3,
+                comment: "Статья понравилась",
+                date: '2023-01-10',
+                author: 3,
+                article_number: 3
+            },
+
+            {
+                id: 4,
+                comment: "Статья понравилась",
+                date: '2023-01-10',
+                author: 4,
+                article_number: 4
+            },
+
+            {
+                id: 5,
+                comment: "Статья понравилась",
+                date: '2023-01-10',
+                author: 5,
+                article_number: 5
+            },
+        ];
+
+        localStorage.setItem('commentsList', JSON.stringify(commentsList));
+
+        localStorage.setItem('initComments', true);
+    }
+
+    commentsList = JSON.parse(localStorage.getItem('commentsList'));
+
     addRows();
 
+
+    document.getElementById('reset').onclick = function () {
+        localStorage.clear();
+        location.reload();
+    };
     // событие submit для добавления новой строчки в таблицу
     $("#form-content").submit(function (event) {
         const formData = new FormData(event.target);

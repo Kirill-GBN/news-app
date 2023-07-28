@@ -23,7 +23,7 @@ caption {
 
 table {
     width: 100%;
-    margin-left: 15px;
+    margin-left: 12px;
 }
 
 table, th, td {
@@ -32,8 +32,8 @@ table, th, td {
 }
 
 th, td {
-    padding: 10px;
-    max-width: 130px;
+    padding: 7px;
+    max-width: 120px;
     word-wrap: break-word;
 }
 
@@ -81,7 +81,7 @@ tr:nth-child(odd) {
 .table-box {
     margin: 0;
     padding: 0;
-    max-width: 860px;
+    max-width: 930px;
     left: -1000px;
     transition: .5s;
     animation: right 1.2s 1;
@@ -111,7 +111,7 @@ tr:nth-child(odd) {
     background-color: rgba(64, 238, 180, 0.637);
     max-height: 700px;
     position: fixed;
-    margin-left: 950px;
+    margin-left: 960px;
     margin-right: 0px;
 }
 

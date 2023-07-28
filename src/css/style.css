@@ -110,10 +110,41 @@ body {
     border-radius: 5px;
     background-color: rgb(230, 252, 252);
     padding: 20px;
+    left: -1000px;
+    transition: .5s;
+    animation: right 1.2s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 0.6s;
+    position: relative;
+}
+
+@keyframes right {
+    0%{
+        right: 0; 
+    }
+    100% {
+        left: 10px;
+    }
 }
 
 .content-right {
     border-radius: 20px;
+    left: 1800px;
+    transition: .5s;
+    animation: left 1.2s 1;
+    animation-fill-mode:inherit;
+    animation-delay: 0.5s;
+    position: relative;
+    display: flex;
+}
+
+@keyframes left {
+    0%{
+        right: 100; 
+    }
+    100% {
+        left: 10px;
+    }
 }
 
 .my_photo {

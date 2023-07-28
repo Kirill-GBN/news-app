@@ -34,7 +34,7 @@ table, th, td {
 
 th, td {
     padding: 10px;
-    max-width: 150px;
+    max-width: 130px;
     word-wrap: break-word;
 }
 
@@ -93,7 +93,7 @@ tr:nth-child(odd) {
 
 @keyframes left {
     0%{
-        right: 100px; 
+        right: 100; 
     }
     100% {
         left: 10px;

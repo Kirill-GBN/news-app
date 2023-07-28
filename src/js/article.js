@@ -1,81 +1,7 @@
 let articlesList = [];
 
 
-// Cписок статей по умолчанию, которые будут в таблице изначально
-let defaultArticlesList = [
-    {
-        id: 1,
-        title: "Мир во всём Мире",
-        content: 'Какой-то очень интересный текст',
-        date: '2023-01-10',
-        subject: "Политика",
-        rating: 1,
-    },
-
-    {
-        id: 2,
-        title: "Деньги всем",
-        content: 'Какой-то очень интересный текст',
-        date: '2023-02-10',
-        subject: "Экономика",
-        rating: 2,
-    },
-
-    {
-        id: 3,
-        title: "Льготы всем",
-        content: 'Какой-то очень интересный текст',
-        date: '2023-02-23',
-        subject: "Социальная сфера",
-        rating: 3,
-    },
-
-    {
-        id: 4,
-        title: "Концерты для всех",
-        content: 'Какой-то очень интересный текст',
-        date: '2023-03-01',
-        subject: "Развлечения",
-        rating: 3,
-    },
-
-    {
-        id: 5,
-        title: "Снятие санкций",
-        content: 'Какой-то очень интересный текст',
-        date: '2023-03-01',
-        subject: "Политика",
-        rating: 1,
-    },
-];
-
 let selectedRowId;
-
-function saveArticlesListToLocalStorage(array) {
-    const arrayString = JSON.stringify(array);
-    window.localStorage.setItem("articles", arrayString);
-};
-
-function updateArticlesListToLocalStorage(array) {
-    const NewArrayString = JSON.stringify(array);
-    window.localStorage.setItem("articles", NewArrayString);
-};
-
-function getArticlesListFromLocalStorage() {
-    const value = window.localStorage.getItem("articles");
-    let result = JSON.parse(value);
-
-    if (result === null) {
-        result = defaultArticlesList;
-    }
-    return result;
-};
-
-
-//   function defaultData() {
-//     localStorage.clear();
-//     // location.reload();
-//   };
 
 
 //функция для добавления строк в таблицу (инициализация таблицы)
@@ -170,9 +96,8 @@ function addRow(articleData) {
             }
         });
         // вызов функции для изменения строки
-        updateArticlesListToLocalStorage(articlesList);
         updateForm(articleData);
-        
+
     };
 
     // создание кнопки "Удалить"
@@ -181,7 +106,7 @@ function addRow(articleData) {
     removeEl.classList.add("remove-btn");
     removeEl.onclick = function () {
         // вызов функции для удаления строки
-        
+
         removeRowFromTable(articleData);
         // window.localStorage.removeItem("articles");
     };
@@ -199,14 +124,25 @@ function addRow(articleData) {
 
 // вызов окна для подтверждения удаления строки
 function removeRowFromTable(articleData) {
+    // if (CheckArticle(articleData)) {
+    //     return
+    // }
     const result = confirm("Вы действительно хотите удалить статью?");
     if (result) {
-        window.localStorage.removeItem("articles");
-        saveArticlesListToLocalStorage(articlesList);
-        // articlesList = articlesList.filter((item) => item.id !== articleData.id);
-        removeRow(articleData);
+        articlesList = articlesList.filter((item) => item.id !== articleData.id);
+        localStorage.setItem("articlesList", JSON.stringify(articlesList));
+        removeRow(articleData, "articlesList");
     }
 }
+
+// /**
+//  * Удаление строки
+//  * @param {string} name_array
+//  */
+
+// function removeRow(articleData, name_array) {
+//     $('#' + articleData.id + '-row-' + name_array).remove();
+// };
 
 
 // удаление строки
@@ -227,7 +163,7 @@ function getRandomIntInclusive(min, max) {
 function addArticle(data) {
     data.id = getRandomIntInclusive(0, 1000);
     articlesList.push(data);
-    saveArticlesListToLocalStorage(articlesList);
+    localStorage.setItem("articlesList", JSON.stringify(articlesList));
     addRow(data);
 }
 
@@ -258,7 +194,7 @@ function clearForm() {
 //функция для обновления данных формы
 function updateForm(articleData) {
     // updateArticlesListToLocalStorage(articlesList);
-    selectedRowId = articleData?.id;
+    selectedRowId = articleData.id;
     // с помощью метода children мы получаем дочерние элемента (ячейки таблицы) строки с id '{n}-row'
     const cells = $("#" + selectedRowId + "-row").children();
     $("#title").val(function () {
@@ -338,7 +274,7 @@ function updateForm(articleData) {
     //     } /// возможно тут поменять
     // });
 
-    updateArticlesListToLocalStorage(articlesList);
+
     // изменение текста кнопки "Добавить" на "Изменить"
     $(".sub-btn-link").val(function () {
         return "Изменить";
@@ -357,7 +293,7 @@ function updateForm(articleData) {
         returnAddBtn();
 
     };
-    
+
     $(".wrapper-btn").append(cancelEl);
     // updateArticlesListToLocalStorage(articlesList);
 }
@@ -365,16 +301,21 @@ function updateForm(articleData) {
 
 // изменение записи в массиве
 function updateArticle(data) {
-    data.id = selectedRowId;
-    articlesList = articlesList.map((item) => {
-        if (item.id === Number(data.id)) {
-            return data;
-        }
-        return item;
-    });
-    saveArticlesListToLocalStorage(articlesList);
+    let result = articlesList.find(item => item.id.toString() === data.id);
+    let index = articlesList.indexOf(result);
+    articlesList[index] = data;
+    localStorage.setItem("articlesList", JSON.stringify(articlesList));
+    updateRow(data);
+    // data.id = selectedRowId;
+    // articlesList = articlesList.map((item) => {
+    //     if (item.id === Number(data.id)) {
+    //         return data;
+    //     }
+    //     return item;
+    // });
+    // saveArticlesListToLocalStorage(articlesList);
     // updateArticlesListToLocalStorage(articlesList);
-    updateRow(articleData);
+    // updateRow(articleData);
     // returnAddBtn();
 }
 
@@ -388,7 +329,6 @@ function updateRow(articleData) {
     cells[4].innerText = articleData.subject;
     cells[5].innerText = articleData.rating;
     cells[6].innerHTML = articleData.like = $('#like').val();
-    // updateArticlesListToLocalStorage(articlesList);
     ///// возможно тут что-то поменть
 }
 
@@ -408,6 +348,17 @@ function updateRow(articleData) {
 //     }
 // }
 
+// function CheckArticle(data) {
+//     let result = likesList.find(item => item.articlesList.toString() === data.id.toString());
+//     if (result !== undefined) {
+//         alert("Вы не можете удалить эти данные, поскольку они используются в другой таблице");
+//         return true
+//     }
+//     else {
+//         return false
+//     }
+// };
+
 
 
 // удаление кнопки "Отмена" и изменение кнопки "Изменить" на кнопку "Добавить"
@@ -423,9 +374,64 @@ function returnAddBtn() {
 
 
 $(document).ready(function () {
-    articlesList = getArticlesListFromLocalStorage();
+    const initArticles = JSON.parse(localStorage.getItem('initArticles')) || false;
+    if (!initArticles) {
+        articlesList = [
+            {
+                id: 1,
+                title: "Мир во всём Мире",
+                content: 'Какой-то очень интересный текст',
+                date: '2023-01-10',
+                subject: "Политика",
+                rating: 1,
+            },
+
+            {
+                id: 2,
+                title: "Деньги всем",
+                content: 'Какой-то очень интересный текст',
+                date: '2023-02-10',
+                subject: "Экономика",
+                rating: 2,
+            },
+
+            {
+                id: 3,
+                title: "Льготы всем",
+                content: 'Какой-то очень интересный текст',
+                date: '2023-02-23',
+                subject: "Социальная сфера",
+                rating: 3,
+            },
+
+            {
+                id: 4,
+                title: "Концерты для всех",
+                content: 'Какой-то очень интересный текст',
+                date: '2023-03-01',
+                subject: "Развлечения",
+                rating: 3,
+            },
+
+            {
+                id: 5,
+                title: "Снятие санкций",
+                content: 'Какой-то очень интересный текст',
+                date: '2023-03-01',
+                subject: "Политика",
+                rating: 1,
+            },
+        ];
+
+        localStorage.setItem('articlesList', JSON.stringify(articlesList));
+
+        localStorage.setItem('initArticles', true);
+    };
+
+    articlesList = JSON.parse(localStorage.getItem('articlesList'));
+
     addRows();
-    // defaultData();
+
     document.getElementById('reset').onclick = function () {
         localStorage.clear();
         location.reload();
@@ -441,6 +447,7 @@ $(document).ready(function () {
             addArticle(data);
         } else if (value === "Изменить") {
             // updateArticlesListToLocalStorage(articlesList);
+            localStorage.setItem('articlesList', JSON.stringify(articlesList));
             updateRow(data);
             // updateArticlesListToLocalStorage(articlesList);
         }

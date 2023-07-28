@@ -34,6 +34,8 @@ table, th, td {
 
 th, td {
     padding: 10px;
+    max-width: 120px;
+    word-wrap: break-word;
 }
 
 th {
@@ -62,7 +64,7 @@ tr:nth-child(odd) {
     transition: .5s;
     animation: show 1s 1;
     animation-fill-mode: forwards;
-    animation-delay: 0.6s;
+    animation-delay: 0.5s;
     display: flex;
     margin: 0;
     padding: 0;
@@ -80,8 +82,23 @@ tr:nth-child(odd) {
 .table-box {
     margin: 0;
     padding: 0;
+    max-width: 930px;
+    top: -1000px;
+    transition: .5s;
+    animation: bottom 1.2s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 0.8s;
+    position: relative;
 }
 
+@keyframes bottom {
+    100%{
+        top: 10px; 
+    }
+    0% {
+        bottom: 0px;
+    }
+}
 
 .form-box {
     justify-content: center;
@@ -94,6 +111,9 @@ tr:nth-child(odd) {
     border-radius: 15px;
     background-color: rgba(64, 238, 180, 0.637);
     max-height: 500px;
+    position: fixed;
+    margin-left: 950px;
+    margin-right: 0px;
 }
 
 #form-content {
